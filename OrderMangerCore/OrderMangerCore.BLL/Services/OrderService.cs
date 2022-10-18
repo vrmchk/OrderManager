@@ -10,13 +10,11 @@ public class OrderService : IOrderService
 {
     private readonly IMapper _mapper;
     private readonly IOrderRepo _orderRepo;
-    private readonly IProductRepo _productRepo;
 
-    public OrderService(IOrderRepo orderRepo, IMapper mapper, IProductRepo productRepo)
+    public OrderService(IOrderRepo orderRepo, IMapper mapper)
     {
         _orderRepo = orderRepo;
         _mapper = mapper;
-        _productRepo = productRepo;
         OrdersCount = _orderRepo.Table.Count();
     }
 
@@ -64,12 +62,13 @@ public class OrderService : IOrderService
 
         foreach (var orderDetailViewModel in orderViewModel.OrderDetails)
         {
-            var product = await _productRepo.FindAsync(orderDetailViewModel.ProductId);
+            var product = await _orderRepo.Context.Products.FindAsync(orderDetailViewModel.ProductId);
             if (product == null)
                 throw new Exception(nameof(product));
         }
 
         _mapper.Map(orderViewModel, order);
+        await _orderRepo.UpdateAsync(order);
         return _mapper.Map<OrderViewModel>(order);
     }
 
