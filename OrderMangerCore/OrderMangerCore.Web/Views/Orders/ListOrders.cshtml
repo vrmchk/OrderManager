@@ -1,0 +1,116 @@
+﻿@model IEnumerable<OrderViewModel>
+
+@{
+    ViewData["Title"] = "Orders";
+    Pager pager = ViewBag.Pager ?? new Pager();
+    string? query = ViewBag.SearchQuery;
+}
+
+<div class="col-4 p-0 justify-content-end">
+    <form asp-controller="Orders" asp-action="ListOrders" asp-route-page="1">
+        <span class="btn-group">
+            <input class="form-control" type="text" name="searchQuery"
+                   placeholder="Search Key">
+            <input class="p-1 ml-2 btn btn-sm btn-info" type="submit"
+                   value="Search">
+        </span>
+    </form>
+</div>
+
+<div class="row">
+    <table class="table table-striped text-center">
+        <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(o => o.Id)</th>
+            <th>@Html.DisplayNameFor(o => o.OrderDate)</th>
+            <th>@Html.DisplayNameFor(o => o.RequiredDate)</th>
+            <th>@Html.DisplayNameFor(o => o.ShippedDate)</th>
+            <th>@Html.DisplayNameFor(o => o.Freight)</th>
+            <th>@Html.DisplayNameFor(o => o.ShipName)</th>
+            <th>@Html.DisplayNameFor(o => o.ShipAddress)</th>
+            <th>@Html.DisplayNameFor(o => o.ShipCity)</th>
+            <th>@Html.DisplayNameFor(o => o.ShipRegion)</th>
+            <th>@Html.DisplayNameFor(o => o.ShipPostalCode)</th>
+            <th>@Html.DisplayNameFor(o => o.ShipCountry)</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(_ => item.Id)</td>
+                <td>@Html.DisplayFor(_ => item.OrderDate)</td>
+                <td>@Html.DisplayFor(_ => item.RequiredDate)</td>
+                <td>@Html.DisplayFor(_ => item.ShippedDate)</td>
+                <td>@Html.DisplayFor(_ => item.Freight)</td>
+                <td>@Html.DisplayFor(_ => item.ShipName)</td>
+                <td>@Html.DisplayFor(_ => item.ShipAddress)</td>
+                <td>@Html.DisplayFor(_ => item.ShipCity)</td>
+                <td>@Html.DisplayFor(_ => item.ShipRegion)</td>
+                <td>@Html.DisplayFor(_ => item.ShipPostalCode)</td>
+                <td>@Html.DisplayFor(_ => item.ShipCountry)</td>
+                <td>
+                    <div class="btn-group">
+                        <a asp-action="Update" asp-route-id="@item.Id" class="btn btn-sm btn-link">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-link">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-link">Delete</a>
+                    </div>
+                </td>
+                @* <td>@Html.ActionLink("Update", "Update", new {id = item.Id})</td> *@
+                @* <td>@Html.ActionLink("Details", "Details", new {id = item.Id})</td> *@
+                @* <td>@Html.ActionLink("Delete", "Delete", new {id = item.Id})</td> *@
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+    @if (pager.PagesCount > 0)
+    {
+        <nav>
+            <ul class="pagination justify-content-center">
+                @if (pager.CurrentPage > 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Orders" asp-action="ListOrders"
+                           asp-route-page="1" asp-route-searchQuery="@query">
+                            First
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Orders" asp-action="ListOrders"
+                           asp-route-page="@(pager.CurrentPage - 1)" asp-route-searchQuery="@query">
+                            Previous
+                        </a>
+                    </li>
+                }
+                @for (int pageIndex = pager.StartPage; pageIndex <= pager.EndPage; pageIndex++)
+                {
+                    <li class="page-item @(pageIndex == pager.CurrentPage ? "active" : "")">
+                        <a class="page-link" asp-controller="Orders" asp-action="ListOrders"
+                           asp-route-page="@pageIndex" asp-route-searchQuery="@query">
+                            @pageIndex
+                        </a>
+                    </li>
+                }
+                @if (pager.CurrentPage < pager.PagesCount)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Orders" asp-action="ListOrders"
+                           asp-route-page="@(pager.CurrentPage + 1)" asp-route-searchQuery="@query">
+                            Next
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Orders" asp-action="ListOrders"
+                           asp-route-page="@(pager.PagesCount)" asp-route-searchQuery="@query">
+                            Last
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+</div>

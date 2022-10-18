@@ -1,0 +1,60 @@
+﻿@model OrderViewModel
+
+@{
+    List<ProductViewModel> products = ViewBag.Products ?? new List<ProductViewModel>();
+    var orderDetails = Model.OrderDetails.ToList();
+}
+
+<h1>Update</h1>
+<hr/>
+
+
+<div class="container justify-content-center">
+    <div class="row justify-content-center">
+        <form asp-controller="Orders" asp-action="UpdateOrder">
+            @for(int i = 0; i < Model.OrderDetails.Count; i++)
+            {
+                <div class="row justify-content-center mb-3">
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>OrderDetail</h5>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="form-label">UnitPrice</label>
+                                    <input asp-for="OrderDetails[i].UnitPrice" 
+                                           type="number" class="form-control" value="@orderDetails[i].UnitPrice">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Discount</label>
+                                    <input asp-for="OrderDetails[i].Discount" 
+                                        type="number" class="form-control" value="@orderDetails[i].Discount">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">ProductId</label>
+                                    <input asp-for="OrderDetails[i].ProductId" 
+                                        type="number" class="form-control" value="@orderDetails[i].ProductId">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Quantity</label>
+                                    <input asp-for="OrderDetails[i].Quantity" 
+                                        type="number" class="form-control" value="@orderDetails[i].Quantity">
+                                </div>
+                            </div>
+
+                            <div class="card-footer"></div>
+
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="row justify-content-center" style="width: 961px; padding-left: 337px">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
