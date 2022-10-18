@@ -276,13 +276,13 @@ public partial class ApplicationDbContext : DbContext
             entity.HasOne(d => d.Order)
                 .WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.OrderId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.ClientCascade)
                 .HasConstraintName("FK_Order_Details_Orders");
 
             entity.HasOne(d => d.Product)
                 .WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.ProductId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.ClientCascade)
                 .HasConstraintName("FK_Order_Details_Products");
         });
 

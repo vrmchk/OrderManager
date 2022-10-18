@@ -7,8 +7,8 @@ namespace OrderMangerCore.DAL.Repositories.Base;
 
 public abstract class BaseRepo<T, TId> : IRepo<T, TId> where T : BaseEntity<TId>, new()
 {
-    protected ApplicationDbContext Context { get; }
     public DbSet<T> Table { get; }
+    public ApplicationDbContext Context { get; }
 
     protected BaseRepo(ApplicationDbContext context)
     {
