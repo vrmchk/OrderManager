@@ -5,13 +5,13 @@
     var orderDetails = Model.OrderDetails.ToList();
 }
 
-<h1>Update</h1>
+<h1>Edit</h1>
 <hr/>
 
 
 <div class="container justify-content-center">
     <div class="row justify-content-center">
-        <form asp-controller="Orders" asp-action="Update" asp-route-id="@Model.Id" method="post">
+        <form asp-controller="Orders" asp-action="Edit" asp-route-id="@Model.Id" method="post">
             @for(int i = 0; i < Model.OrderDetails.Count; i++)
             {
                 <div class="row justify-content-center mb-3">

@@ -20,7 +20,7 @@ public class OrdersController : Controller
     public IActionResult Index() => Redirect("orders/page/1");
 
 
-    [HttpGet("orders/page/{page}/{searchQuery?}")]
+    [Route("orders/page/{page}/{searchQuery?}")]
     public async Task<IActionResult> ListOrders(int page = 1, string? searchQuery = null)
     {
         List<OrderViewModel> orders;
@@ -57,7 +57,7 @@ public class OrdersController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Update(int id)
+    public async Task<IActionResult> Edit(int id)
     {
         var order = await _orderService.GetByIdAsync(id);
         var allProducts = (await _productService.GetAllAsync()).ToList();
@@ -65,16 +65,30 @@ public class OrdersController : Controller
         return View(order);
     }
 
-    [HttpPut]
-    public async Task<IActionResult> UpdateOrder(OrderViewModel order)
+    [HttpPost]
+    public async Task<IActionResult> Edit([FromRoute]int id, OrderViewModel order)
     {
-        await _orderService.UpdateAsync(order.Id, order);
-        // return RedirectToAction(nameof(Details), new {id = order.Id});
-        return Redirect($"orders/details/{order.Id}");
+        try
+        {
+            await _orderService.UpdateAsync(id, order);
+        }
+        catch (Exception e)
+        {
+            RedirectToAction("Error", "Home");
+        }
+        return RedirectToAction(nameof(Details), new {id = order.Id});
+        // return Redirect($"orders/details/{order.Id}");
     }
 
-    [HttpDelete]
+    [HttpGet]
     public async Task<IActionResult> Delete(int id)
+    {
+        var order = await _orderService.GetByIdAsync(id);
+        return View(order);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> DeleteOrder(int id)
     {
         await _orderService.DeleteAsync(id);
         return RedirectToAction(nameof(Index));
